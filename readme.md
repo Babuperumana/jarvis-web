@@ -1,177 +1,208 @@
-# ⚙️ MARK LI (51)
-### The Ultimate Cross-Platform Personal AI Assistant — By FatihMakes
+﻿# 🤖 JARVIS (MARK LI) — Advanced AI Assistant & Autonomous Voice Agent
 
-> 📺 **[Watch the full setup video on YouTube](https://www.youtube.com/@FatihMakes)**
+[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/release/python-3110/)
+[![Tests](https://img.shields.io/badge/unit%20tests-50%20passed-brightgreen.svg)]()
+[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
 
-A real-time voice AI that can hear, see, understand, and control your computer — on any OS. Supports Windows, macOS, and Linux. Built on the Gemini Live API for native audio streaming, delivering zero subscriptions and total digital autonomy.
-
----
-
-## ✨ Overview
-
-MARK LI is the final form of the core: an assistant you extend without ever touching its engine. Drop a single plugin file into the `plugins/` folder and JARVIS learns a new skill on the next launch — no code changes, no configuration, no risk. On top of that, the voice itself got smarter: JARVIS now hears the emotion in your voice, knows when you're talking to someone else in the room and stays silent, and can hold one conversation for hours without losing the thread.
-
-It's not just an assistant — it's an extension of your digital life.
+An autonomous, multi-modal personal AI assistant capable of real-time voice conversations, vision, system automation, autonomous phone calls over WhatsApp Desktop, drone control, and local offline intelligence.
 
 ---
 
-## 🚀 Capabilities
+## 🌟 Key Highlights
 
-### Core Features
-| Feature | Description |
-|---|---|
-| 🧩 Plugin System | Drop a single `.py` file into `plugins/` — JARVIS learns a new skill on next launch |
-| 🎙️ Real-time Voice | Ultra-low latency conversation in any language via Gemini Live API |
-| 💓 Affective Dialog | Hears the emotion in your voice and adapts its tone in response |
-| 🤫 Proactive Audio | Knows when you're not talking to it — background chatter never triggers a reply |
-| ♾️ Unlimited Sessions | Sliding-window context compression — one conversation can last for hours |
-| 🖥️ System Control | Launch apps, adjust volume/brightness, WiFi, shortcuts, power — all by voice |
-| 🧩 Autonomous Tasks | High-level planning for complex multi-step goals via agent mode |
-| 👁️ Visual Awareness | Real-time screen capture and webcam vision piped into your main Gemini session |
-| 🧠 Persistent Memory | Deeply remembers projects, preferences, and personal context across sessions |
-| ⌨️ Hybrid Input | Seamlessly switch between keyboard typing and voice commands |
-| 🌅 Morning Briefing | On first boot: greets you, reads the time, recaps yesterday, and fetches live news |
-| 🔔 Proactive 2.0 | Time-aware, context-aware check-ins — knows the time of day, your projects, and what you've been discussing |
-| 🗓️ Session Memory | Summarises each conversation and mentions it naturally next morning — consumed after use, never repeats |
-| 👁️‍🗨️ Background Monitoring | User-configured topic watching — checks for new headlines once a day and alerts naturally |
-| 📊 Hardware Monitoring | Continuous CPU, RAM, GPU and temperature telemetry with localized voice alerts |
-| 🌤️ Weather Report | Live weather data for your city, personalized from memory |
-| 🗺️ Dynamic Content Panel | Scrollable display layer beneath the HUD that renders web results, news, and search data |
-| 🔍 Multi-Mode Web Search | `news` / `research` / `price` / `compare` / `search` — Gemini Grounded first, DDG fallback |
-| ⏰ Smart Reminders | OS-native scheduled notifications (Windows Task Scheduler / macOS LaunchAgent / Linux systemd) |
-| ✈️ Flight Finder | Live flight price and availability lookup |
-| 🎮 Game Updater | Checks and triggers game updates on Steam and Epic Games on demand |
-| 📂 File Processor | Read, summarize, and answer questions about local files |
-| 💻 Code Helper | Inline code review, debugging, and generation |
-| 🌐 Browser Control | Open URLs, navigate tabs, and interact with the browser by voice |
-| 📨 Send Message | Compose and send messages through WhatsApp, Telegram, and more |
-| 🎬 YouTube Control | Search, play, and control YouTube playback by voice |
-| 🖱️ Desktop Control | Taskbar, window management, and desktop-level operations |
-| 🧑‍💻 Silent Language Memory | Detects spoken language on first use — all future sessions adapt automatically |
-| 📱 Remote Dashboard | Control the assistant from your phone via QR code pairing |
-| ⚡ Auto-Start on Boot | Registers with the OS startup system (registry / LaunchAgent / .desktop) |
-| 📋 Clipboard Intelligence | Copy any text → floating panel with Translate / Summarise / Explain / Fix |
-| 🎨 Assistant Customization | Change the assistant name and your name from the UI — takes effect immediately |
+- **🎙️ Real-Time 2-Way WhatsApp Voice Bridge**: Automatically calls contacts on WhatsApp Desktop, captures remote voice via WASAPI loopback, detects speech via adaptive VAD, transcribes via CUDA-accelerated aster-whisper, generates contextual responses via Ollama (llama3.2), and speaks back into the call using EdgeTTS and Virtual Audio Cable with self-echo cancellation.
+- **🧠 Hybrid Intelligence**: Works seamlessly with Google Gemini Live API for cloud multimodal streaming, or completely offline with local LLMs (Ollama llama3.2, llama3.1, qwen, gemma).
+- **🚀 GPU-Accelerated Speech Processing**: Native CUDA support on NVIDIA GPUs (e.g. RTX 3050+) for ultra-fast Whisper speech-to-text with automatic graceful CPU fallback (int8).
+- **🚁 Drone Flight Control Plugin**: Autonomous physical and simulated drone control for KY-UFO drones with automatic calibration and countdown sequence.
+- **🖥️ Desktop & OS Automation**: Full control over windows, system volume, browser navigation, YouTube, files, apps, and hardware telemetry.
+- **🧩 Zero-Code Plugin Engine**: Drop any .py file into plugins/ and JARVIS dynamically registers the skill on launch with crash isolation.
 
 ---
 
-## 🆕 What's New in Mark LI
+## 📋 System Prerequisites
 
-### 🧩 Plugin System — Extend JARVIS Without Touching a Single Core File
-The headline feature of Mark LI, and the reason it's the final architecture version. Every new capability from now on ships as a single `.py` file:
-
-1. Download a plugin file (e.g. `calorie_counter.py`)
-2. Drop it into the `plugins/` folder
-3. Restart JARVIS — done. The skill is live, by voice, in any language.
-
-Each plugin declares its own Gemini tool schema and logic in one file. The engine auto-discovers it at startup, registers it with the Live session, and lists it in the new **🧩 Plugin Manager** panel where every plugin gets its own persistent ON/OFF toggle.
-
-Safety is built in at three layers: a broken or badly written plugin can **never** crash JARVIS — it simply shows up as "BROKEN" in the manager with the error explained, while every other tool and plugin keeps working. Name collisions with core tools are detected and rejected automatically. Want to write your own? Copy `plugins/_template.py` and fill in two things: the `PLUGIN` dict and the `run()` function.
-
-### 💓 Affective Dialog — JARVIS Hears How You Feel
-Powered by Gemini Live's native audio understanding, JARVIS now picks up the emotion in your voice — excitement, frustration, fatigue — and adapts its own tone in response. Late-night tired questions get calm answers; excited announcements get energy back.
-
-### 🤫 Proactive Audio — Knows When You're Not Talking to It
-The biggest quality-of-life upgrade for an always-listening assistant: JARVIS can now tell when speech isn't addressed to it. Talking to someone in the room, taking a phone call, TV in the background — it stays silent instead of interjecting. No wake word needed, no accidental replies.
-
-### ♾️ Unlimited Session Length — The Conversation Never Dies
-Sliding-window context compression means the Live session no longer terminates when the context window fills up. Combined with session resumption, JARVIS holds one continuous conversation for hours without losing the thread.
-
-All three Live API upgrades degrade gracefully: if the preview API ever rejects them, JARVIS automatically reconnects with the standard configuration — users never see a crash.
+| Component | Minimum Requirement | Recommended |
+|---|---|---|
+| **Operating System** | Windows 10/11 (64-bit) | Windows 11 (64-bit) |
+| **Python** | Python 3.11 | Python 3.11 |
+| **GPU (Optional)** | CPU supported | NVIDIA GPU (CUDA 11/12) for fast Whisper STT |
+| **Virtual Audio** | Required for WhatsApp Voice Bridge | [VB-Audio Virtual Cable](https://vb-audio.com/Cable/) |
+| **Local LLM** | Ollama | [Ollama](https://ollama.com/) with llama3.2 |
 
 ---
 
-## 🗺️ Mark Roadmap
+## 🛠️ Step-by-Step Setup Guide
 
-| Mark | Focus |
-|---|---|
-| **XLVIII** | Instant interrupt · parallel news · two-phase briefing · exponential backoff · vision cooldown |
-| **XLIX** | Auto-start · clipboard intelligence · assistant customization |
-| **L** | Session memory · background monitoring · proactive 2.0 · instant vision · parallel news search |
-| **LI** | Plugin system · affective dialog · proactive audio · unlimited sessions |
-| **LII+** | Plugin files: email · quiz mode · calorie counter · calendar · and more |
+### 1. Clone the Repository
 
----
+`powershell
+git clone https://github.com/deestudio028-droid/jarvis.git
+cd jarvis
+`
 
-## ⚡ Quick Start
+### 2. Set Up a Python Virtual Environment
 
-```bash
-git clone https://github.com/FatihMakes/Mark-LI.git
-cd Mark-LI
+`powershell
+python -m venv venv
+.\venv\Scripts\activate
+`
+
+### 3. Install Dependencies
+
+Install all required packages including UI, audio, speech, and Windows automation libraries:
+
+`powershell
 pip install -r requirements.txt
+`
+
+> **Note for PyTorch with CUDA**: If you want GPU acceleration for Whisper on NVIDIA hardware, ensure PyTorch with CUDA is installed:
+> `powershell
+> pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu118
+> `
+
+### 4. Configure Application Settings
+
+Copy the example configuration file and add your credentials:
+
+`powershell
+Copy-Item config\api_keys.json.example config\api_keys.json
+`
+
+Edit config/api_keys.json:
+`json
+{
+    "gemini_api_key": "YOUR_GEMINI_API_KEY",
+    "os_system": "windows",
+    "camera_index": 0,
+    "llm_provider": "ollama",
+    "llm_model": "llama3.2",
+    "llm_url": "http://localhost:11434",
+    "plugins_enabled": {
+        "whatsapp_monitor": true,
+        "whatsapp_voice_bridge": true
+    },
+    "assistant_name": "JARVIS",
+    "user_name": "Sir",
+    "ui_color": "#00d4ff"
+}
+`
+
+### 5. Install and Start Ollama (for Local Intelligence)
+
+1. Download and install Ollama from [https://ollama.com](https://ollama.com).
+2. Pull the configured model:
+   `powershell
+   ollama pull llama3.2
+   `
+3. Start the Ollama server:
+   `powershell
+   ollama serve
+   `
+
+### 6. Setup VB-Audio Virtual Cable (for WhatsApp Voice Bridge)
+
+To enable two-way AI voice calls through WhatsApp:
+1. Download and install **VB-Audio Virtual Cable** from [https://vb-audio.com/Cable/](https://vb-audio.com/Cable/).
+2. Open **WhatsApp Desktop** -> **Settings** -> **Audio & Video**:
+   - Set **Microphone** to: CABLE Output (VB-Audio Virtual Cable)
+   - Set **Speakers** to: Default System Speaker (Headphones / Speakers)
+
+---
+
+## 🚀 Running the Assistant
+
+### Launching the Full JARVIS HUD Interface
+Starts the futuristic PyQt6 HUD with visual waveforms, telemetry, camera feed, and Gemini Live streaming:
+
+`powershell
 python main.py
-```
+`
 
-> ⚠️ **Installation Note:** Some OS-specific dependencies are not bundled in `requirements.txt` to keep the repo lightweight. If you hit a `ModuleNotFoundError`, install the missing package with `pip install <module_name>`.
+### Launching the Autonomous WhatsApp Voice Bridge
+Initiates an autonomous 2-way AI phone conversation with a specific contact:
+
+`powershell
+python live_test_bridge.py "<contact_name>" --debug-audio
+`
+*Example:*
+`powershell
+python live_test_bridge.py "My World" --debug-audio
+`
+
+**Conversation Flow:**
+`	ext
+WhatsApp Call Initiated
+       ↓
+Remote Person Answers
+       ↓
+WASAPI Loopback Captures Audio
+       ↓
+Adaptive VAD Detects Speech
+       ↓
+Whisper Transcribes Speech (CUDA)
+       ↓
+Ollama (llama3.2) Generates Concise Response
+       ↓
+EdgeTTS Speaks Response into Virtual Audio Cable
+       ↓
+Remote Person Hears JARVIS in Real Time
+       ↓
+(Acoustic Cooldown & Self-Hearing Discard)
+       ↓
+Next Turn Repeats Continuously
+`
 
 ---
 
-## 📋 Requirements
+## 🧪 Testing and Verification
 
-| Requirement | Details |
-| --- | --- |
-| **OS** | Windows 10/11, macOS, or Linux |
-| **Python** | 3.11 or 3.12 |
-| **Microphone** | Required for voice interaction |
-| **API Key** | Free Gemini API key (`config/api_keys.json`) |
+Run the automated test suite (50 unit tests covering call logic, audio loopback recovery, VAD adaptation, and LLM 404 resilience):
+
+`powershell
+python -m unittest discover tests
+`
+
+To run a standalone audio backend and loopback diagnostic:
+`powershell
+python -c "from live_test_bridge import diagnostic_audio_test; diagnostic_audio_test()"
+`
+
+To run an Ollama readiness and LLM streaming diagnostic:
+`powershell
+python -c "from core.llm_client import check_llm_readiness; check_llm_readiness()"
+`
 
 ---
 
-## 🗂️ Project Structure
+## 📁 Repository Structure
 
-```
-Mark LI/
-├── main.py                   # Core loop — Gemini Live session, audio I/O, tool dispatch
-├── ui.py                     # PyQt6 HUD — waveform, log panel, plugin manager, camera feed
-├── setup.py                  # First-run configuration wizard
-├── plugins/
-│   └── _template.py          # Copy this to write a new plugin — one file, drop in, done
-├── actions/
-│   ├── web_search.py         # Gemini + DDG parallel search (news, research, price, compare)
-│   ├── screen_processor.py   # Screen capture & webcam vision via Gemini Live
-│   ├── background_monitor.py # User-configured topic watching — daily DDG check, no crypto
-│   ├── proactive.py          # Proactive 2.0 — time/context/rotation-aware check-ins
-│   ├── reminder.py           # OS-native scheduled notifications
-│   ├── system_monitor.py     # CPU / RAM / GPU / temperature telemetry
-│   ├── computer_settings.py  # Volume, brightness, WiFi, power
-│   ├── computer_control.py   # Keyboard shortcuts, mouse, window management
-│   ├── open_app.py           # Application launcher
-│   ├── browser_control.py    # Web browser control
-│   ├── file_controller.py    # File system operations
-│   ├── file_processor.py     # Document reading and summarization
-│   ├── send_message.py       # Messaging integration
-│   ├── weather_report.py     # Live weather data
-│   ├── flight_finder.py      # Flight search
-│   ├── youtube_video.py      # YouTube playback control
-│   ├── game_updater.py       # Game update management (Steam / Epic)
-│   ├── code_helper.py        # Code review and generation
-│   ├── dev_agent.py          # Developer task agent
-│   └── desktop.py            # Desktop and taskbar control
-├── memory/
-│   ├── memory_manager.py     # Load/save long_term.json — sessions, monitors, identity
-│   └── long_term.json        # Persistent store: identity, preferences, projects, sessions, monitors
+`	ext
+jarvis/
+├── main.py                          # Main entry point & Gemini Live loop
+├── ui.py                            # Futuristic PyQt6 interface & HUD
+├── setup.py                         # First-time configuration wizard
+├── live_test_bridge.py              # WhatsApp 2-way live conversation bridge runner
+├── requirements.txt                 # Project dependencies
 ├── core/
-│   ├── prompt.txt            # Assistant personality and tool-routing rules
-│   └── plugin_loader.py      # Plugin engine — discovery, validation, crash isolation
+│   ├── llm_client.py                # Ollama & OpenAI API streaming client
+│   ├── stt.py                       # Faster-Whisper (CUDA) & Vosk offline STT
+│   ├── tts.py                       # EdgeTTS & local TTS player with device routing
+│   └── plugin_loader.py             # Dynamic plugin discovery & crash isolation
+├── plugins/
+│   ├── whatsapp_voice_bridge.py     # 2-way audio call state machine & VAD
+│   ├── whatsapp_desktop_call.py     # WhatsApp Desktop UIA / keyboard automation
+│   ├── whatsapp_monitor.py          # Notification monitoring
+│   └── ky_ufo_drone.py              # Drone flight control plugin
+├── tests/
+│   ├── test_whatsapp_voice_bridge.py # 50 unit tests for bridge and audio safety
+│   ├── test_whatsapp_desktop_call.py # Tests for UI automation
+│   └── test_ky_ufo_drone.py         # Tests for drone telemetry & commands
 └── config/
-    └── api_keys.json         # API key, OS setting, assistant name, user name
-```
+    └── api_keys.json.example        # Configuration template
+`
 
 ---
 
 ## ⚠️ License
 
-Personal and non-commercial use only.
-Licensed under **[Creative Commons BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)**.
-
----
-
-## 👤 Connect with the Creator
-
-Engineered by a developer building a real-world JARVIS-style assistant.
-⭐ **Star the repository to support the journey to Mark 100.**
-
-| Platform | Link |
-| --- | --- |
-| YouTube | [@FatihMakes](https://www.youtube.com/@FatihMakes) |
-| Instagram | [@fatihmakes](https://www.instagram.com/fatihmakes) |
+Personal and non-commercial educational use. Licensed under **[Creative Commons BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)**.

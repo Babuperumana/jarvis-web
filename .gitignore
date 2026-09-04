@@ -22,3 +22,5 @@ memory/*.json
 Thumbs.db
 desktop.ini
 *.bak
+
+.env

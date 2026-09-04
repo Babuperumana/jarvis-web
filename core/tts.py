@@ -77,24 +77,28 @@ def _compress_silence(
     return np.concatenate(out) if out else arr
 
 
+TTS_OUTPUT_DEVICE = None
+
 def _play_np(samples, sample_rate: int) -> None:
     """Play float32 mono (or stereo) audio via sounddevice.
     Accepts numpy arrays or PyTorch tensors.
     """
-    sd.play(_to_numpy(samples), sample_rate)
+    global TTS_OUTPUT_DEVICE
+    sd.play(_to_numpy(samples), sample_rate, device=TTS_OUTPUT_DEVICE)
     sd.wait()
 
 
 def _play_audio_bytes(audio_bytes: bytes) -> None:
     """Decode MP3/WAV/OGG bytes and play via sounddevice (uses miniaudio)."""
     import miniaudio
+    global TTS_OUTPUT_DEVICE
     decoded = miniaudio.decode(
         audio_bytes,
         output_format=miniaudio.SampleFormat.FLOAT32,
         nchannels=1,
     )
     samples = np.array(decoded.samples, dtype=np.float32)
-    sd.play(samples, decoded.sample_rate)
+    sd.play(samples, decoded.sample_rate, device=TTS_OUTPUT_DEVICE)
     sd.wait()
 
 

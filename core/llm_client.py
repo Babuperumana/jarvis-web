@@ -200,7 +200,7 @@ def check_model_available(log: Callable | None = None) -> bool:
         pulled = [m.get("name", "") for m in resp.json().get("models", [])]
         model_base = model.split(":")[0]
         found = any(
-            m == model or m == model_base or m.startswith(model_base + ":")
+            m == model or m == f"{model}:latest" or m == model_base or m.startswith(model_base + ":")
             for m in pulled
         )
         if not found:
@@ -216,6 +216,61 @@ def check_model_available(log: Callable | None = None) -> bool:
         return found
     except Exception:
         return True   # Ollama might still be starting up; non-blocking
+
+
+def check_llm_readiness(auto_pull: bool = True) -> tuple[bool, str]:
+    """
+    Diagnostic & readiness check for LLM backend.
+    Logs:
+      [LLM] Ollama URL: ...
+      [LLM] Ollama server: READY/NOT READY
+      [LLM] Available models: ...
+      [LLM] Selected model: ...
+    Verifies that the configured model is available locally.
+    """
+    url, model = get_llm_settings()
+    provider = get_llm_provider()
+
+    print(f"[LLM] Ollama URL: {url}")
+
+    if not ensure_ollama_running(timeout=15):
+        print("[LLM] Ollama server: NOT READY")
+        return False, f"Ollama server is not reachable at {url}"
+
+    print("[LLM] Ollama server: READY")
+
+    if provider == "ollama":
+        try:
+            resp = requests.get(f"{url}/api/tags", timeout=5)
+            if resp.status_code == 200:
+                raw_models = resp.json().get("models", [])
+                available = [m.get("name", "") for m in raw_models]
+                avail_str = ", ".join(available) if available else "None"
+                print(f"[LLM] Available models: {avail_str}")
+                print(f"[LLM] Selected model: {model}")
+
+                model_base = model.split(":")[0]
+                model_found = any(
+                    m == model or m == f"{model}:latest" or m == model_base or m.startswith(f"{model_base}:")
+                    for m in available
+                )
+                if not model_found:
+                    print(f"[LLM] Model '{model}' not found in local Ollama repository.")
+                    if auto_pull:
+                        print(f"[LLM] Attempting to pull '{model}'...")
+                        res = subprocess.run(["ollama", "pull", model], capture_output=True, text=True)
+                        if res.returncode == 0:
+                            print(f"[LLM] Model '{model}' pulled successfully.")
+                            return True, f"Model '{model}' ready"
+                        else:
+                            print(f"[LLM] Failed to pull '{model}': {res.stderr}")
+                    return False, f"Model '{model}' is not pulled. Run: ollama pull {model}"
+                return True, f"Model '{model}' ready"
+        except Exception as e:
+            print(f"[LLM] Error querying /api/tags: {e}")
+            return False, str(e)
+
+    return True, "LLM server ready"
 
 
 def get_llm_settings() -> tuple[str, str]:
@@ -321,8 +376,16 @@ def call_llm(
     except requests.exceptions.Timeout:
         raise RuntimeError("Ollama request timed out after 120 s.")
     except requests.exceptions.HTTPError as e:
-        print(f"[LLM] HTTPError: {e.response.status_code} — {e.response.text[:200]}")
-        raise RuntimeError(f"Ollama HTTP error: {e.response.status_code}")
+        err_detail = ""
+        try:
+            err_detail = e.response.json().get("error", "")
+        except Exception:
+            err_detail = e.response.text if e.response is not None else ""
+        if e.response is not None and e.response.status_code == 404:
+            print(f"[LLM] HTTP 404 Not Found from {endpoint}: {err_detail or 'Model or endpoint not found'}")
+            raise RuntimeError(f"Ollama HTTP 404 Not Found: {err_detail or f'Model {model} not found'}")
+        print(f"[LLM] HTTPError: {e.response.status_code if e.response else 'unknown'} — {err_detail[:200]}")
+        raise RuntimeError(f"Ollama HTTP error {e.response.status_code if e.response else 'unknown'}: {err_detail or e}")
     except Exception as e:
         print(f"[LLM] Unexpected error: {type(e).__name__}: {e}")
         raise RuntimeError(f"LLM call failed: {e}")
@@ -580,7 +643,16 @@ def call_llm_stream(
     except requests.exceptions.Timeout:
         raise RuntimeError("Ollama stream timed out.")
     except requests.exceptions.HTTPError as e:
-        raise RuntimeError(f"Ollama HTTP error: {e.response.status_code}")
+        err_detail = ""
+        try:
+            err_detail = e.response.json().get("error", "")
+        except Exception:
+            err_detail = e.response.text if e.response is not None else ""
+        if e.response is not None and e.response.status_code == 404:
+            print(f"[LLM] HTTP 404 Not Found from {endpoint}: {err_detail or 'Model or endpoint not found'}")
+            raise RuntimeError(f"Ollama HTTP 404 Not Found: {err_detail or f'Model {model} not found'}")
+        print(f"[LLM] HTTPError: {e.response.status_code if e.response else 'unknown'} — {err_detail[:200]}")
+        raise RuntimeError(f"Ollama HTTP error {e.response.status_code if e.response else 'unknown'}: {err_detail or e}")
     except Exception as e:
         print(f"[LLM] Stream error: {type(e).__name__}: {e}")
         raise RuntimeError(f"LLM stream failed: {e}")
