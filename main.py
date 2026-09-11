@@ -89,6 +89,10 @@ RECEIVE_SAMPLE_RATE = 24000
 CHUNK_SIZE          = 1024
 
 def _get_api_key() -> str:
+    import os
+    env_key = os.getenv("GEMINI_API_KEY")
+    if env_key:
+        return env_key
     with open(API_CONFIG_PATH, "r", encoding="utf-8") as f:
         return json.load(f)["gemini_api_key"]
 
